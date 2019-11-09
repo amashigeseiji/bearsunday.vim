@@ -20,8 +20,8 @@ command! -nargs=* -complete=customlist,bearsunday#resource#completion BEARResour
 
 augroup new_file
   autocmd!
-  autocmd BufNewFile */Resource/App/*.php,*/Resource/Page/*.php call BEARNewResource
-  autocmd BufNewFile */Module/*.php call BEARNewModule
+  autocmd BufNewFile */Resource/App/*.php,*/Resource/Page/*.php :BEARNewResource
+  autocmd BufNewFile */Module/*.php :BEARNewModule
 augroup END
 
 let &cpo = s:save_cpo
