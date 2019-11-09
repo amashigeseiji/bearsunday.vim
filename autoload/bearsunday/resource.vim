@@ -36,30 +36,9 @@ function! bearsunday#resource#call(method, ...) abort
   call insert(l:response, '"> request: ' . l:exec . '",', 0)
   call insert(l:response, '', 1)
   call insert(l:response, '"> response:",', 2)
-  call s:openBuffer(l:response, escape(l:uri, '\'))
-endfunction
-
-function! s:openBuffer(content, title)
-  silent! exec 'new ' . a:title
-  silent! exec 'setl filetype=json'
-  silent! exec 'setl buftype=nofile'
-  silent! exec 'setl hidden'
-  silent! exec 'setl bufhidden=wipe'
-  silent! exec 'setl nowrap'
-  silent! exec 'setl nonumber'
-  call setline('.', a:content)
-  silent! exec ':%s/\\u\([0-9a-f]\{4}\)/\=nr2char(eval("0x".submatch(1)),1)/g'
-  execute 'map <buffer><silent> q :bd!<CR>'
-  silent! exec 'setl readonly'
-  silent! exec 'setl nomodifiable'
+  call bearsunday#buffer#open(l:response, escape(l:uri, '\'))
 endfunction
 
 function! bearsunday#resource#completion(ArgLead, CmdLine, CursorPos)
-  let l:cmd = split(a:CmdLine)
-  let l:len_cmd = len(l:cmd)
-
-  if l:len_cmd <= 1
-    let l:filter_cmd = printf('v:val =~ "^%s"', a:ArgLead)
-    return filter(['options', 'get', 'post', 'put', 'patch', 'delete', 'head'], l:filter_cmd)
-  endif
+  "todo
 endfunction
