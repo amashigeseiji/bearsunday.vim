@@ -33,19 +33,21 @@ function! bearsunday#resource#call(method, ...) abort
     let l:response[l:linenum] = '"' . line .'",'
     let l:linenum += 1
   endfor
-  call insert(l:response, '"> request: ' . l:exec . '",', 0)
+  call insert(l:response, '"> request: ' . tolower(expand('%:p:h:t')) . ' ' . l:uri . '",', 0)
   call insert(l:response, '', 1)
   call insert(l:response, '"> response:",', 2)
   call bearsunday#buffer#open(l:response, escape(l:uri, '\'))
 endfunction
 
-function! bearsunday#resource#completion(ArgLead, CmdLine, CursorPos)
+function! bearsunday#resource#completion(ArgLead, CmdLine, CursorPos) abort
   let l:cmd = split(a:CmdLine, ' ', 1)
   let l:len_cmd = len(l:cmd)
 
   if l:len_cmd <= 2
+    let l:commands = ['get ', 'post ', 'put ', 'patch ', 'delete ']
+    let l:filtered = filter(l:commands, { k, v -> search('on' . trim(v, ' '), 'n') })
     let l:filter_cmd = printf('v:val =~ "^%s"', a:ArgLead)
-    return filter(['options ', 'get ', 'post ', 'put ', 'patch ', 'delete ', 'head '], l:filter_cmd)
+    return filter(l:filtered + ['options ', 'head '], l:filter_cmd)
   endif
 
   if l:len_cmd > 2
