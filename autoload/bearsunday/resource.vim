@@ -25,18 +25,41 @@ function! bearsunday#resource#call(method, ...) abort
   let l:uri = call('s:createUrl', a:000)
   let l:exec = l:command . " '" . l:uri . "'"
   let l:response = systemlist(l:exec)
+  let l:result = bearsunday#resource#response(l:response)
+  call insert(l:result['response'], '"> request: ' . tolower(expand('%:p:h:t')) . ' ' . l:uri . '",', 0)
+  call insert(l:result['response'], '', 1)
+  call insert(l:result['response'], '"> response:",', 2)
+  call bearsunday#buffer#open(l:result['response'], escape(l:uri, '\'), l:result['mediaType'])
+endfunction
+
+function! bearsunday#resource#response(response) abort
   let l:linenum = 0
-  for line in l:response
+  let l:header = []
+  let l:mediaType = ''
+  for line in a:response
     if line == ''
       break
     endif
-    let l:response[l:linenum] = '"' . line .'",'
+    if line =~ 'content-type'
+      if line =~ 'json'
+        let l:mediaType = 'json'
+      elseif line =~ 'html'
+        let l:mediaType = 'html'
+      endif
+    endif
+    call add(l:header, line)
     let l:linenum += 1
   endfor
-  call insert(l:response, '"> request: ' . tolower(expand('%:p:h:t')) . ' ' . l:uri . '",', 0)
-  call insert(l:response, '', 1)
-  call insert(l:response, '"> response:",', 2)
-  call bearsunday#buffer#open(l:response, escape(l:uri, '\'))
+
+  let l:linenum = 0
+  if l:mediaType =~ 'json'
+    for line in l:header
+      let a:response[l:linenum] = printf('"%s",', line)
+      let l:linenum += 1
+    endfor
+  endif
+
+  return { 'response': a:response, 'mediaType': l:mediaType }
 endfunction
 
 function! bearsunday#resource#completion(ArgLead, CmdLine, CursorPos) abort

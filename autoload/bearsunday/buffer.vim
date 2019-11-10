@@ -1,6 +1,8 @@
-function! bearsunday#buffer#open(content, title)
+function! bearsunday#buffer#open(content, title, fileType)
   silent! exec 'new ' . a:title
-  silent! exec 'setl filetype=json'
+  if a:fileType != ''
+    silent! exec 'setl filetype=' . a:fileType
+  endif
   silent! exec 'setl buftype=nofile'
   silent! exec 'setl hidden'
   silent! exec 'setl bufhidden=wipe'
