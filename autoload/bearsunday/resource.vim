@@ -40,12 +40,29 @@ function! bearsunday#resource#call(method, ...) abort
 endfunction
 
 function! bearsunday#resource#completion(ArgLead, CmdLine, CursorPos)
-  let l:cmd = split(a:CmdLine)
+  let l:cmd = split(a:CmdLine, ' ', 1)
   let l:len_cmd = len(l:cmd)
-  echom l:cmd
 
-  if l:len_cmd <= 1
+  if l:len_cmd <= 2
     let l:filter_cmd = printf('v:val =~ "^%s"', a:ArgLead)
-    return filter(['options', 'get', 'post', 'put', 'patch', 'delete', 'head'], l:filter_cmd)
+    return filter(['options ', 'get ', 'post ', 'put ', 'patch ', 'delete ', 'head '], l:filter_cmd)
+  endif
+
+  if l:len_cmd > 2
+    let l:method = 'function on' . l:cmd[1]
+    let l:searched = search(l:method, 'n')
+    if l:searched > 0
+      let l:line = getline(l:searched)
+      while 1
+        let l:searched += 1
+        let l:line .= getline(l:searched)
+        if l:line =~ ')'
+          break
+        endif
+      endwhile
+      let l:matched = split(trim(matchstr(l:line, '(.*)'), '()'), ',')
+      let l:funcArgs = map(l:matched, { k, v -> trim(matchstr(v, '$[^, ]*'), '$') . '=' })
+      return l:funcArgs
+    endif
   endif
 endfunction
