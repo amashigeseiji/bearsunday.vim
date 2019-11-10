@@ -12,7 +12,7 @@ let s:scriptDir = expand('<sfile>:p:h')
 command! BEARNewResource call bearsunday#template#newFile(s:scriptDir . '/../snip-resource')
 command! BEARNewModule call bearsunday#template#newFile(s:scriptDir . '/../snip-module')
 command! -nargs=* -complete=customlist,bearsunday#resource#completion BEARResource call bearsunday#resource#call(<f-args>)
-command! -nargs=? BEARDependency call bearsunday#dependency#get(<f-args>)
+command! -nargs=? BEARBinding call bearsunday#binding#get(<f-args>)
 
 augroup new_file
   autocmd!

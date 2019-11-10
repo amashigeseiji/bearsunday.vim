@@ -14,9 +14,9 @@ require $dir . '/autoload.php';
 use BEAR\AppMeta\Meta;
 use BEAR\Package\AppInjector;
 
-echo new dependency($name, $context, $dir);
+echo new binding($name, $context, $dir);
 
-class dependency
+class binding
 {
     public function __construct($name, $context, $cacheDir)
     {
