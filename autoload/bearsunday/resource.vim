@@ -26,9 +26,11 @@ function! bearsunday#resource#call(method, ...) abort
   let l:exec = l:command . " '" . l:uri . "'"
   let l:response = systemlist(l:exec)
   let l:result = bearsunday#resource#response(l:response)
-  call insert(l:result['response'], '"> request: ' . tolower(expand('%:p:h:t')) . ' ' . l:uri . '",', 0)
+  call insert(l:result['response'], tolower(expand('%:p:h:t')) . ' ' . l:uri, 0)
+  if l:result['mediaType'] == 'json'
+    let l:result['response'][0] = '"' . l:result['response'][0] . '",'
+  endif
   call insert(l:result['response'], '', 1)
-  call insert(l:result['response'], '"> response:",', 2)
   call bearsunday#buffer#open(l:result['response'], escape(l:uri, '\'), l:result['mediaType'])
 endfunction
 
@@ -37,6 +39,12 @@ function! bearsunday#resource#response(response) abort
   let l:header = []
   let l:mediaType = ''
   for line in a:response
+    if l:linenum == 0
+      let l:head = match(line, '^[0-9]\{3\} ')
+      if l:head != 0
+        return {'response': a:response, 'mediaType': ''}
+      endif
+    endif
     if line == ''
       break
     endif
