@@ -47,14 +47,18 @@ function! s:GetComposer()
 endfunction
 " }}}
 
-" Get namespace from composer.json {{{
-function! bearsunday#composer#namespace()
+function! bearsunday#composer#namespaceBase()
   let l:composer = s:GetComposer()
   let l:items = []
   for i in values(l:composer['autoload'])
     call add(l:items, items(i))
   endfor
-  let l:namespaces = l:items[0]
+  return l:items[0]
+endfunction
+
+" Get namespace from composer.json {{{
+function! bearsunday#composer#namespace()
+  let l:namespaces = bearsunday#composer#namespaceBase()
   let l:current = expand('%:h')
   let l:substitute = ''
   for j in l:namespaces
