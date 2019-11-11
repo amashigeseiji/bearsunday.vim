@@ -75,9 +75,9 @@ class binding
                 $filtered = array_filter($this->filter, function ($filter) use ($interface) {
                     return preg_match('@'.$filter.'@i', $interface);
                 });
-            }
-            if (empty($filtered)) {
-                continue;
+                if (empty($filtered)) {
+                    continue;
+                }
             }
             $class = get_class($obj);
             switch ($class) {
