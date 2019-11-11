@@ -31,7 +31,13 @@ use BEAR\Package\AppInjector;
 
 $json = new binding($name, $context, $dir);
 if ($filter) {
-    $json->filter($filter['f']);
+    if (is_array($filter['f'])) {
+        foreach ($filter['f'] as $f) {
+            $json->filter($f);
+        }
+    } else {
+        $json->filter($filter['f']);
+    }
 }
 echo $json;
 
