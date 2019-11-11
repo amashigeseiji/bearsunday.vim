@@ -67,7 +67,7 @@ class binding
         return self::getPrivate($module->getContainer(), 'container');
     }
 
-    private static function getPrivate(object $object, string $property)
+    private static function getPrivate($object, string $property)
     {
         $ref = new ReflectionClass($object);
         $prop = $ref->getProperty($property);
