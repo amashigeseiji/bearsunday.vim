@@ -1,4 +1,19 @@
 <?php
+/**
+ * BEAR.Sunday DI Binding
+ *
+ * Usage:
+ *   php binding.php [-f filter] dir=/path/to/bear name='App\Name' context=prod-app
+ *
+ * Arguments:
+ *   - dir=<path>        path to bearsunday directory.
+ *   - name=<appname>    vendor prefix
+ *   - context=<context> context name
+ *
+ * Options:
+ *   - -f <filter>       filter word
+ */
+$filter = getopt('f:');
 foreach ($argv as $arg) {
     if (strpos($arg, '=') === false) {
         continue;
@@ -14,21 +29,35 @@ require $dir . '/autoload.php';
 use BEAR\AppMeta\Meta;
 use BEAR\Package\AppInjector;
 
-echo new binding($name, $context, $dir);
+$json = new binding($name, $context, $dir);
+if ($filter) {
+    $json->filter($filter['f']);
+}
+echo $json;
 
 class binding
 {
+    private $name;
+    private $context;
+    private $cacheDir;
+    private $filter = [];
+
     public function __construct($name, $context, $cacheDir)
     {
         $this->name = $name;
         $this->context = $context;
         $this->cacheDir = $cacheDir;
-        $this->dep = $this->make();
+    }
+
+    public function filter(string $word)
+    {
+        $this->filter[] = $word;
     }
 
     public function __toString()
     {
-        return json_encode($this->dep, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $dep = $this->make();
+        return json_encode($dep, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
     private function make()
@@ -36,6 +65,14 @@ class binding
         $container = $this->getContainer($this->name, $this->context, $this->cacheDir);
         $dependency = [];
         foreach ($container as $interface => $obj) {
+            if ($this->filter) {
+                $filtered = array_filter($this->filter, function ($filter) use ($interface) {
+                    return preg_match('@'.$filter.'@i', $interface);
+                });
+            }
+            if (empty($filtered)) {
+                continue;
+            }
             $class = get_class($obj);
             switch ($class) {
             case 'Ray\Di\Instance':
