@@ -16,7 +16,7 @@ example:
 :BEARResource get id=3 name=Foo
 ```
 
-and response buffer will open.
+and buffer will open with response.
 
 ```
 php bin/page.php get /editingResource?id=3&name=Foo
@@ -33,6 +33,12 @@ php bin/page.php get /editingResource?id=3&name=Foo
 ```
 
 you can close buffer with type `q`.
+
+## Binding
+
+```
+:BEARBinding filterword
+```
 
 ## Skeleton
 
