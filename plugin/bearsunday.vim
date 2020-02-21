@@ -11,11 +11,13 @@ command! -nargs=* -complete=customlist,bearsunday#resource#completion BEARResour
 command! -nargs=* BEARBinding call bearsunday#binding#get(<f-args>)
 
 " snippet settings
+let g:bearsunday_snippet_dir = expand('<sfile>:p:h') . '/../snippet/'
 let g:bearsunday_snippet_mapping = {
       \ 'resource': '/Resource/',
       \ 'module': 'Module.php',
       \ 'interceptor': 'Interceptor.php',
       \ 'test': 'Test.php',
+      \ 'default': '.php'
       \}
 
 augroup new_file

@@ -1,4 +1,3 @@
-let s:snippetDir = expand('<sfile>:p:h') . '/../../'
 
 function! bearsunday#template#newFile()
   let l:composerDir = bearsunday#composer#dir()
@@ -18,10 +17,9 @@ function! s:Snippet()
   let l:current = expand('%:p')
   for key in keys(g:bearsunday_snippet_mapping)
     if l:current =~ g:bearsunday_snippet_mapping[key]
-      return expand(s:snippetDir . 'snip-' . key)
+      return expand(g:bearsunday_snippet_dir . 'snip-' . key)
     endif
   endfor
-  return expand(s:snippetDir . 'snip-default')
 endfunction
 
 " 行単位の置換
