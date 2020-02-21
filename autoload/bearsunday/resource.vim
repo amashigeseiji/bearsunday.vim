@@ -31,7 +31,9 @@ function! bearsunday#resource#call(method, ...) abort
     let l:result['response'][0] = '"' . l:result['response'][0] . '",'
   endif
   call insert(l:result['response'], '', 1)
-  call bearsunday#buffer#open(l:result['response'], escape(l:uri, '\'), l:result['mediaType'])
+  call bearsunday#buffer#open(l:result['response'], l:result['mediaType'])
+  " move previous window
+  :wincmd p
 endfunction
 
 function! bearsunday#resource#response(response) abort
