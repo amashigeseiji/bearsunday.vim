@@ -39,10 +39,11 @@ function! s:GetComposer()
 
   if empty(file)
     cd %:h
+  else
+    let s:composerDir = l:pwd
+    let s:composer = json_decode(join(readfile(l:file)))
   endif
   let s:composerLoaded = 1
-  let s:composerDir = l:pwd
-  let s:composer = json_decode(join(readfile(l:file)))
   return s:composer
 endfunction
 " }}}
