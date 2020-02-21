@@ -10,6 +10,14 @@ set cpo&vim
 command! -nargs=* -complete=customlist,bearsunday#resource#completion BEARResource call bearsunday#resource#call(<f-args>)
 command! -nargs=* BEARBinding call bearsunday#binding#get(<f-args>)
 
+" snippet settings
+let g:bearsunday_snippet_mapping = {
+      \ 'resource': '/Resource/',
+      \ 'module': 'Module.php',
+      \ 'interceptor': 'Interceptor.php',
+      \ 'test': 'Test.php',
+      \}
+
 augroup new_file
   autocmd!
   autocmd BufNewFile *.php call bearsunday#template#newFile()

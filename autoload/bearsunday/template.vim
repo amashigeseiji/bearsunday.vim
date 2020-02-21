@@ -16,15 +16,12 @@ endfunction
 " snippet の取得
 function! s:Snippet()
   let l:current = expand('%:p')
-  if l:current =~ '/Resource/'
-    return expand(s:snippetDir . 'snip-resource')
-  elseif l:current =~ 'Module.php'
-    return expand(s:snippetDir . 'snip-module')
-  elseif l:current =~ 'Interceptor.php'
-    return expand(s:snippetDir . 'snip-interceptor')
-  else
-    return expand(s:snippetDir . 'snip-default')
-  endif
+  for key in keys(g:bearsunday_snippet_mapping)
+    if l:current =~ g:bearsunday_snippet_mapping[key]
+      return expand(s:snippetDir . 'snip-' . key)
+    endif
+  endfor
+  return expand(s:snippetDir . 'snip-default')
 endfunction
 
 " 行単位の置換

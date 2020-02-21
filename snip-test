@@ -1,0 +1,12 @@
+<?php
+namespace `namespace`;
+
+use BEAR\Package\AppInjector;
+use PHPUnit\Framework\TestCase;
+
+class `class` extends TestCase
+{
+    public function test`class`()
+    {
+    }
+}
