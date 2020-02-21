@@ -20,6 +20,8 @@ function! s:Snippet()
     return expand(s:snippetDir . 'snip-resource')
   elseif l:current =~ 'Module.php'
     return expand(s:snippetDir . 'snip-module')
+  elseif l:current =~ 'Interceptor.php'
+    return expand(s:snippetDir . 'snip-interceptor')
   else
     return expand(s:snippetDir . 'snip-default')
   endif

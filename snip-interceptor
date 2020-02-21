@@ -1,0 +1,12 @@
+<?php
+namespace `namespace`;
+
+use Ray\Aop\MethodInterceptor;
+use Ray\Aop\MethodInvocation;
+
+class `class` implements MethodInterceptor
+{
+    public function invoke(MethodInvocation $invocation)
+    {
+    }
+}
