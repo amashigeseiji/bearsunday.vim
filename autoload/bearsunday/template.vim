@@ -26,11 +26,11 @@ endfunction
 function! s:Subst(line)
   let l:line = a:line
   if l:line =~ "`namespace`"
-    let l:namespace = escape(bearsunday#composer#namespace(), '\')
+    let l:namespace = bearsunday#composer#namespace()
     if l:namespace =~ "^$"
       let line = ""
     else
-      let line = substitute(line, '`namespace`', escape(bearsunday#composer#namespace(), '\'), 'g')
+      let line = substitute(line, '`namespace`', escape(l:namespace, '\'), 'g')
     endif
   elseif line =~ "`class`"
     let line = substitute(line, '`class`', expand("%:t:r"), 'g')
