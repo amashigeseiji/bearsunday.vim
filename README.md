@@ -1,8 +1,8 @@
 # BEAR.Sunday vim plugin
 
-## Resource Access
+## Resource
 
-`BEARResource` calls api from editing buffer.
+`BEARResource` command calls api from editing buffer.
 
 usage:
 
@@ -11,6 +11,21 @@ usage:
 ```
 
 example:
+
+```php
+class EditingResource extends ResourceObject
+{
+    public function onGet(int $id, string $name) : ResourceObject
+    {
+        $this->body = [
+            'message' => 'hello, ' . $name,
+            'id' => $id
+        ];
+
+        return $this;
+    }
+}
+```
 
 ```vim
 :BEARResource get id=3 name=Foo
@@ -28,17 +43,12 @@ php bin/page.php get /editingResource?id=3&name=Foo
 "Last-Modified: Sun, 10 Nov 2019 06:47:53 GMT",
 
 {
-  "message": "hello"
+  "message": "hello, Foo",
+  "id": 3
 }
 ```
 
 you can close buffer with type `q`.
-
-## Binding
-
-```
-:BEARBinding filterword
-```
 
 ## Skeleton
 
@@ -66,3 +76,4 @@ class SomeNewResource extends ResourceObject
 ```
 
 `Vendor\Prefix` in namespace will be replaced by `composer.json`'s `autoload.psr-4` setting.
+
