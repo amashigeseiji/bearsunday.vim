@@ -51,12 +51,16 @@ endfunction
 function! bearsunday#composer#namespaceBase()
   let l:composer = s:GetComposer()
   let l:items = []
-  for i in values(l:composer['autoload'])
-    call add(l:items, items(i)[0])
-  endfor
-  for i in values(l:composer['autoload-dev'])
-    call add(l:items, items(i)[0])
-  endfor
+  if (has_key(l:composer, 'autoload') && has_key(l:composer['autoload'], 'psr-4'))
+    for i in keys(l:composer['autoload']['psr-4'])
+      call add(l:items, [i, l:composer['autoload']['psr-4'][i]])
+    endfor
+  endif
+  if (has_key(l:composer, 'autoload-dev') && has_key(l:composer['autoload-dev'], 'psr-4'))
+    for i in keys(l:composer['autoload-dev']['psr-4'])
+      call add(l:items, [i, l:composer['autoload-dev']['psr-4'][i]])
+    endfor
+  endif
   return l:items
 endfunction
 
