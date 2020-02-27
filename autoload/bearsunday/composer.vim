@@ -65,16 +65,22 @@ function! bearsunday#composer#namespaceBase()
 endfunction
 
 " Get namespace from composer.json {{{
+" todo: 表記ゆれ対応
+" {
+"   'Foo\\': 'foo/',
+"   'Bar': 'src',
+" }
 function! bearsunday#composer#namespace()
   let l:namespaces = bearsunday#composer#namespaceBase()
-  let l:current = expand('%:h')
+  let l:current = expand('%:h') . '/'
   let l:substitute = ''
   for j in l:namespaces
     if l:current =~ j[1]
       let l:substitute = substitute(l:current, j[1], escape(j[0], '\\'), "")
     endif
   endfor
-  return substitute(l:substitute, '/', '\\', '')
+  let l:substitute = substitute(l:substitute, '/', '\\', '')
+  return substitute(l:substitute, '\\$', '', '')
 endfunction
 " }}}
 
