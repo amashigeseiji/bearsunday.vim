@@ -18,7 +18,7 @@ function! bearsunday#buffer#open(content, fileType)
   execute 'map <buffer><silent> q :call bearsunday#buffer#close()<CR>'
   silent! exec 'setl readonly'
   silent! exec 'setl nomodifiable'
-  let s:bufnr = bufnr()
+  let s:bufnr = bufnr('%')
 endfunction
 
 function! bearsunday#buffer#close()
