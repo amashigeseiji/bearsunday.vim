@@ -80,7 +80,8 @@ function! bearsunday#composer#namespace()
     endif
   endfor
   let l:substitute = substitute(l:substitute, '/', '\\', '')
-  return substitute(l:substitute, '\\$', '', '')
+  let l:substitute = substitute(l:substitute, '\\$', '', '')
+  return substitute(l:substitute, '/', '', '')
 endfunction
 " }}}
 
