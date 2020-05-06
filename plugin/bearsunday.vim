@@ -11,6 +11,7 @@ command! -nargs=* -complete=customlist,bearsunday#resource#completion BEARResour
 command! -nargs=* BEARBinding call bearsunday#binding#get(<f-args>)
 command! BEARTestOpen call bearsunday#test#open()
 command! BEARTestExec call bearsunday#test#execute()
+command! PhpUnit call php#phpunit#run()
 
 " snippet settings
 let g:bearsunday_snippet_dir = expand('<sfile>:p:h') . '/../snippet/'
