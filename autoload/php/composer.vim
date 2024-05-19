@@ -81,7 +81,7 @@ function! php#composer#namespace()
       let l:substitute = substitute(l:current, j[1], escape(j[0], '\\'), "")
     endif
   endfor
-  let l:substitute = substitute(l:substitute, '/', '\\', '')
+  let l:substitute = substitute(l:substitute, '/', '\\', 'g')
   let l:substitute = substitute(l:substitute, '\\$', '', '')
   return substitute(l:substitute, '/', '', '')
 endfunction
